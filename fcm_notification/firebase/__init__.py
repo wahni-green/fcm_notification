@@ -15,7 +15,16 @@ def send_notification(data):
 		relative_path = frappe.db.get_single_value(
 			"FCM Settings", "service_account_json"
 		)
-		full_path = os.path.join(frappe.get_site_path(), relative_path.strip("/"))
+
+		if not relative_path:
+			frappe.throw("FCM Settings: Service Account JSON is not configured")
+
+		file_doc = frappe.get_doc("File", {"file_url": relative_path})
+
+		if not file_doc.is_private:
+			frappe.throw("FCM Service Account file must be private")
+
+		full_path = file_doc.get_full_path()
 
 		cred = credentials.Certificate(full_path)
 

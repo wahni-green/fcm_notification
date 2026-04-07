@@ -31,7 +31,15 @@ def update_notifications(notification_list):
 	if isinstance(notification_list, str):
 		notification_list = frappe.parse_json(notification_list)
 
-	frappe.db.set_value("Notification Log", notification_list, {"read": 1})
+	frappe.db.set_value(
+		"Notification Log",
+		{
+			"name": ["in", notification_list],
+			"for_user": frappe.session.user
+		},
+		"read",
+		1
+	)
 
 	return{
 		"success": True, 
