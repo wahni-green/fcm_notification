@@ -52,6 +52,9 @@ class NotificationBroadcast(Document):
 
 
 def create_notification_log(user_list, notification_doc):
+	if not frappe.get_single_value("FCM Settings", "enabled"):
+		return
+
 	for user in user_list:
 		doc = frappe.get_doc({
 			"doctype": "Notification Log",

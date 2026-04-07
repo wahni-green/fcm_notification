@@ -20,8 +20,8 @@ def send_mobile_notification(doc, method=None):
         return
 
     data.update({
-        "title": strip_html(str(doc.subject)),
-        "body": strip_html(str(doc.email_content)),
+        "title": strip_html(doc.subject or ""),
+        "body": strip_html(doc.email_content or ""),
         "token": fcm_token
     })
 

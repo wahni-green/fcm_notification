@@ -5,8 +5,8 @@
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
-  "enabled",
   "service_account_json",
+  "enabled",
   "column_break_tnat",
   "cool_down_time",
   "section_break_ffny",
@@ -47,7 +47,7 @@
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2026-04-07 16:24:36.574537",
+ "modified": "2026-04-07 19:03:27.684955",
  "modified_by": "Administrator",
  "module": "FCM Notification",
  "name": "FCM Settings",

@@ -22,10 +22,10 @@
   },
   {
    "fieldname": "user_type_to_send_notification",
-   "fieldtype": "Select",
+   "fieldtype": "Link",
    "in_list_view": 1,
    "label": "User Type to Send Notification",
-   "options": "Site Engineer\nLabour"
+   "options": "FCM User Type"
   },
   {
    "default": "0",
@@ -80,7 +80,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-04-07 15:11:01.336697",
+ "modified": "2026-04-07 20:44:59.459848",
  "modified_by": "Administrator",
  "module": "FCM Notification",
  "name": "Notification Broadcast",
