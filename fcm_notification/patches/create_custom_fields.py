@@ -20,6 +20,7 @@ def execute():
                     "fieldtype": "Small Text",
                     "label": "FCM Token",
                     "insert_after": "user_role",
+                    "read_only" 1,
                 },
             ]
         }
