@@ -49,3 +49,17 @@ class NotificationBroadcast(Document):
 		enqueue_create_notification(user_list, notification_doc)
 
 		return True
+
+
+def create_notification_log(user_list, notification_doc):
+	for user in user_list:
+		doc = frappe.get_doc({
+			"doctype": "Notification Log",
+			"subject": notification_doc.get("subject"),
+			"email_content": notification_doc.get("email_content"),
+			"type": notification_doc.get("type") or "Alert",
+			"for_user": user,
+			"from_user": notification_doc.get("from_user"),
+			"from_fcm": notification_doc.get("from_fcm") or 0
+		})
+		doc.insert(ignore_permissions=True)

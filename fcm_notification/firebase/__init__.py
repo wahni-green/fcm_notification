@@ -1,4 +1,4 @@
-# Copyright (c) 2026, Wahni IT Solutions Pvt Ltd and contributors
+	# Copyright (c) 2026, Wahni IT Solutions Pvt Ltd and contributors
 # For license information, please see license.txt
 
 import os
@@ -10,7 +10,6 @@ from frappe.utils import get_datetime_in_timezone, add_to_date
 from firebase_admin import messaging, credentials
 
 
-@frappe.whitelist()
 def send_notification(data):
 	if not firebase_admin._apps:
 		relative_path = frappe.db.get_single_value(

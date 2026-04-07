@@ -5,6 +5,7 @@
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
+  "enabled",
   "service_account_json",
   "column_break_tnat",
   "cool_down_time",
@@ -12,6 +13,12 @@
   "credential"
  ],
  "fields": [
+  {
+   "default": "0",
+   "fieldname": "enabled",
+   "fieldtype": "Check",
+   "label": "Enabled"
+  },
   {
    "fieldname": "section_break_ffny",
    "fieldtype": "Section Break"
