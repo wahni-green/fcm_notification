@@ -1,35 +1,35 @@
 {
  "actions": [],
- "autoname": "field:user",
- "creation": "2025-01-11 16:18:25.605743",
+ "allow_rename": 1,
+ "creation": "2026-04-06 16:28:57.654538",
  "doctype": "DocType",
+ "editable_grid": 1,
  "engine": "InnoDB",
  "field_order": [
-  "user"
+  "role"
  ],
  "fields": [
   {
-   "fieldname": "user",
+   "fieldname": "role",
    "fieldtype": "Link",
    "in_list_view": 1,
-   "label": "User",
-   "options": "User",
-   "reqd": 1,
-   "unique": 1
+   "label": "Role",
+   "options": "Role",
+   "reqd": 1
   }
  ],
+ "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "istable": 1,
  "links": [],
- "modified": "2026-04-07 15:15:55.508207",
+ "modified": "2026-04-07 15:11:24.118524",
  "modified_by": "Administrator",
  "module": "FCM Notification",
- "name": "FCM User",
- "naming_rule": "By fieldname",
+ "name": "FCM Role",
  "owner": "Administrator",
  "permissions": [],
  "row_format": "Dynamic",
- "sort_field": "creation",
+ "sort_field": "modified",
  "sort_order": "DESC",
  "states": []
 }

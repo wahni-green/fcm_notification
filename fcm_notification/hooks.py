@@ -137,13 +137,13 @@ app_license = "agpl-3.0"
 # ---------------
 # Hook on document methods and events
 
-# doc_events = {
-# 	"*": {
-# 		"on_update": "method",
-# 		"on_cancel": "method",
-# 		"on_trash": "method"
-# 	}
-# }
+doc_events = {
+	"Notification Log": {
+        "after_insert": "fcm_notification.crud_events.notification.send_mobile_notification",
+    },
+    "*": {"on_submit": "fcm_notification.crud_events.notification.send_mobile_notification"},
+}
+
 
 # Scheduled Tasks
 # ---------------

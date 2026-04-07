@@ -5,5 +5,5 @@
 from frappe.tests.utils import FrappeTestCase
 
 
-class TestFCMSettings(FrappeTestCase):
+class TestNotificationBroadcast(FrappeTestCase):
 	pass
