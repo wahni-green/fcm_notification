@@ -3,7 +3,7 @@
 
 
 import frappe
-from fcm_notifications.api.utils import log_and_structure
+from fcm_notification.api.utils import log_and_structure
 from frappe.utils import strip_html
 
 
