@@ -50,14 +50,14 @@ def update_notifications(notification_list):
 @frappe.whitelist(methods=["POST"])
 @log_and_structure
 def update_fcm_token(fcm_token=None):
-
-	user = frappe.session.user
 	
 	if not fcm_token:
 		return {
 			"success": False,
 			"message": "FCM token is required",
-		}	
+		}
+
+	user = frappe.session.user	
 	
 	frappe.db.set_value("User", user, "fcm_token", fcm_token) 
 

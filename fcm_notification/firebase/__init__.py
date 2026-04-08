@@ -5,31 +5,11 @@ import os
 import frappe
 import firebase_admin
 from frappe.utils import get_datetime_in_timezone, add_to_date
-from frappe.utils import strip_html
 from firebase_admin import messaging, credentials
 
-def send_notification(doc):
+def send_notification(data):
 	if not frappe.get_single_value("FCM Settings", "enabled"):
 		return
-
-	doc = data
-
-	data = {
-		"title": "",
-		"body": "",
-		"token": "",
-		"method": "TOKEN"
-	}
-
-	fcm_token = frappe.db.get_value("User", doc.for_user, "fcm_token")
-	if not fcm_token:
-		return
-
-	data.update({
-		"title": strip_html(doc.subject or ""),
-		"body": strip_html(doc.email_content or ""),
-		"token": fcm_token
-	})
 
 	if not firebase_admin._apps:
 		relative_path = frappe.db.get_single_value(
