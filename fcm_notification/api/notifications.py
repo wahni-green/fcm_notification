@@ -10,9 +10,8 @@ from frappe.utils import strip_html
 @frappe.whitelist(methods=["GET"])
 @log_and_structure
 def fetch_notifications():
-	notification_list = frappe.db.get_all("Notification Log",
-		{"for_user": frappe.session.user},
-		["*"]
+	notification_list = frappe.db.get_all(
+		"Notification Log", {"for_user": frappe.session.user}, ["*"]
 	)
 
 	for notification in notification_list:
@@ -50,7 +49,6 @@ def update_notifications(notification_list):
 @frappe.whitelist(methods=["POST"])
 @log_and_structure
 def update_fcm_token(fcm_token=None):
-	
 	if not fcm_token:
 		return {
 			"success": False,
@@ -58,7 +56,6 @@ def update_fcm_token(fcm_token=None):
 		}
 
 	user = frappe.session.user	
-	
 	frappe.db.set_value("User", user, "fcm_token", fcm_token) 
 
 	roles = frappe.get_roles(user)
