@@ -9,18 +9,19 @@ def execute():
         {
             "User": [
                 {
-                    "fieldname": "user_role",
-                    "fieldtype": "Select",
-                    "label": "User Type",
-                    "options": "\nSite Engineer\nLabour",
-                    "insert_after": "username",
-                },
-                {
                     "fieldname": "fcm_token",
                     "fieldtype": "Small Text",
                     "label": "FCM Token",
                     "insert_after": "user_role",
                     "read_only": 1,
+                },
+            ],
+            "Role": [
+                {
+                    "fieldname": "is_fcm_role",
+                    "fieldtype": "Check",
+                    "label": "Is FCM Role",
+                    "insert_after": "two_factor_auth",
                 },
             ]
         }

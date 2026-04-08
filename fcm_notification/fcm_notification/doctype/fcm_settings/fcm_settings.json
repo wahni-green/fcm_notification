@@ -1,7 +1,7 @@
 {
  "actions": [],
  "allow_rename": 1,
- "creation": "2025-01-11 16:32:18.694440",
+ "creation": "2026-04-08 10:03:50.827457",
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
@@ -47,7 +47,7 @@
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2026-04-07 19:03:27.684955",
+ "modified": "2026-04-08 10:03:50.827457",
  "modified_by": "Administrator",
  "module": "FCM Notification",
  "name": "FCM Settings",

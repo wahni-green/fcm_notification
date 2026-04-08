@@ -25,7 +25,8 @@
    "fieldtype": "Link",
    "in_list_view": 1,
    "label": "User Type to Send Notification",
-   "options": "FCM User Type"
+   "options": "Role",
+   "link_filters": "[[\"Role\",\"is_fcm_role\",\"=\",1]]"
   },
   {
    "default": "0",

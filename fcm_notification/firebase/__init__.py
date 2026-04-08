@@ -1,4 +1,4 @@
-	# Copyright (c) 2026, Wahni IT Solutions Pvt Ltd and contributors
+# Copyright (c) 2026, Wahni IT Solutions Pvt Ltd and contributors
 # For license information, please see license.txt
 
 import os
@@ -11,6 +11,9 @@ from firebase_admin import messaging, credentials
 
 
 def send_notification(data):
+	if not frappe.get_single_value("FCM Settings", "enabled"):
+		return
+
 	if not firebase_admin._apps:
 		relative_path = frappe.db.get_single_value(
 			"FCM Settings", "service_account_json"

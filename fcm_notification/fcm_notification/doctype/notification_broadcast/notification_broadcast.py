@@ -6,6 +6,7 @@ from frappe import scrub
 from frappe.utils import now, add_to_date
 from frappe.model.document import Document
 from frappe.desk.doctype.notification_log.notification_log import enqueue_create_notification
+from frappe.utils.user import get_users_with_role
 
 from fcm_notification.firebase import send_notification
 
@@ -31,13 +32,11 @@ class NotificationBroadcast(Document):
 			"method": "TOKEN",
 		})
 
-		user_list = frappe.db.get_all("User",
-			{
-				"user_role": self.user_type_to_send_notification,
-				"enabled": 1,
-			},
-			pluck="name"
-		)
+		user_list = []
+		role_doc = frappe.get_doc("Role", self.user_type_to_send_notification)
+		if role_doc.is_fcm_role:
+			user_list = get_users_with_role(self.user_type_to_send_notification)
+
 		notification_doc = {
 			"subject": self.notification_title,
 			"email_content": self.notification_context,
