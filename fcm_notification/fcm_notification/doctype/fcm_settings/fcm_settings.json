@@ -1,11 +1,14 @@
 {
  "actions": [],
  "allow_rename": 1,
- "creation": "2025-01-11 16:32:18.694440",
+ "creation": "2026-04-08 10:03:50.827457",
  "doctype": "DocType",
  "engine": "InnoDB",
  "field_order": [
+  "service_account_json",
   "enabled",
+  "column_break_tnat",
+  "cool_down_time",
   "section_break_ffny",
   "credential"
  ],
@@ -23,13 +26,29 @@
   {
    "fieldname": "credential",
    "fieldtype": "Attach",
+   "hidden": 1,
    "label": "Credential"
+  },
+  {
+   "fieldname": "column_break_tnat",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "10",
+   "fieldname": "cool_down_time",
+   "fieldtype": "Int",
+   "label": "Cool Down Time (In Minutes)"
+  },
+  {
+   "fieldname": "service_account_json",
+   "fieldtype": "Attach",
+   "label": "Service account JSON"
   }
  ],
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2025-01-11 16:33:03.055338",
+ "modified": "2026-04-08 14:33:47.262581",
  "modified_by": "Administrator",
  "module": "FCM Notification",
  "name": "FCM Settings",
@@ -46,6 +65,7 @@
    "write": 1
   }
  ],
+ "row_format": "Dynamic",
  "sort_field": "creation",
  "sort_order": "DESC",
  "states": []

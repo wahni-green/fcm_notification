@@ -83,7 +83,7 @@ app_license = "agpl-3.0"
 # ------------
 
 # before_install = "fcm_notification.install.before_install"
-# after_install = "fcm_notification.install.after_install"
+after_install = "fcm_notification.install.after_install"
 
 # Uninstallation
 # ------------
@@ -137,13 +137,12 @@ app_license = "agpl-3.0"
 # ---------------
 # Hook on document methods and events
 
-# doc_events = {
-# 	"*": {
-# 		"on_update": "method",
-# 		"on_cancel": "method",
-# 		"on_trash": "method"
-# 	}
-# }
+doc_events = {
+	"Notification Log": {
+        "after_insert": "fcm_notification.crud_events.notification.send_mobile_notification",
+    },
+}
+
 
 # Scheduled Tasks
 # ---------------
