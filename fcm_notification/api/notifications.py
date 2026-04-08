@@ -63,8 +63,19 @@ def update_fcm_token(fcm_token=None):
 	user_doc.fcm_token = fcm_token
 	user_doc.save(ignore_permissions=True)
 
+	roles = frappe.get_roles(user)
+	fcm_roles = frappe.get_all(
+		"Role",
+		filters={
+			"name": ["in", roles],
+			"is_fcm_role": 1
+		},
+		pluck="name"
+	)
+
 	return {
 		"success": True,
 		"message": "FCM token updated successfully",
-		"user": user
+		"user": user,
+		"fcm_roles": fcm_roles
 	}

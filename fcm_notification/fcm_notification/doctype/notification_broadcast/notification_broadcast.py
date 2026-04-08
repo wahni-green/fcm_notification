@@ -7,7 +7,7 @@ from frappe.utils import now, add_to_date
 from frappe.model.document import Document
 from frappe.desk.doctype.notification_log.notification_log import enqueue_create_notification
 from fcm_notification.firebase import send_notification
-from fcm_notification.fcm_notification.__init__ import get_users_with_role
+from fcm_notification import get_users_with_role
 
 
 class NotificationBroadcast(Document):
@@ -27,8 +27,8 @@ class NotificationBroadcast(Document):
 		send_notification({
 			"title": self.notification_title,
 			"body": self.notification_context,
-			"token": frappe.db.get_value("User", frappe.session.user, "fcm_token"),
-			"method": "TOKEN",
+			"token": self.fcm_role,
+			"method": "TOPIC",
 		})
 
 		user_list = get_users_with_role(self.fcm_role)
@@ -44,20 +44,3 @@ class NotificationBroadcast(Document):
 		enqueue_create_notification(user_list, notification_doc)
 
 		return True
-
-
-def create_notification_log(user_list, notification_doc):
-	if not frappe.get_single_value("FCM Settings", "enabled"):
-		return
-
-	for user in user_list:
-		doc = frappe.get_doc({
-			"doctype": "Notification Log",
-			"subject": notification_doc.get("subject"),
-			"email_content": notification_doc.get("email_content"),
-			"type": notification_doc.get("type") or "Alert",
-			"for_user": user,
-			"from_user": notification_doc.get("from_user"),
-			"from_fcm": notification_doc.get("from_fcm") or 0
-		})
-		doc.insert(ignore_permissions=True)

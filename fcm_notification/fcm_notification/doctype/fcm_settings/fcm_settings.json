@@ -26,6 +26,7 @@
   {
    "fieldname": "credential",
    "fieldtype": "Attach",
+   "hidden": 1,
    "label": "Credential"
   },
   {
@@ -47,7 +48,7 @@
  "index_web_pages_for_search": 1,
  "issingle": 1,
  "links": [],
- "modified": "2026-04-08 10:03:50.827457",
+ "modified": "2026-04-08 14:33:47.262581",
  "modified_by": "Administrator",
  "module": "FCM Notification",
  "name": "FCM Settings",

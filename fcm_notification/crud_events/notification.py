@@ -2,13 +2,14 @@
 # For license information, please see license.txt
 
 import frappe
-
 from frappe.utils import strip_html
-
 from fcm_notification.firebase import send_notification
 
 
 def send_mobile_notification(doc, method=None):
+    if doc.from_fcm:
+        return
+    
     data = {
         "title": "",
         "body": "",

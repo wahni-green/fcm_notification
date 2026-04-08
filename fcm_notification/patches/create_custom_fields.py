@@ -23,6 +23,16 @@ def execute():
                     "label": "Is FCM Role",
                     "insert_after": "two_factor_auth",
                 },
+            ],
+            "Notification Log": [
+                {
+                    "fieldname": "from_fcm",
+                    "fieldtype": "Check",
+                    "label": "From FCM",
+                    "insert_after": "for_user",
+                    "read_only": 1
+                }
             ]
+
         }
     )
