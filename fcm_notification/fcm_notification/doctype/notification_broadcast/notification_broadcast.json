@@ -7,7 +7,7 @@
  "engine": "InnoDB",
  "field_order": [
   "section_break_kyci",
-  "user_type_to_send_notification",
+  "fcm_role",
   "is_reusable",
   "cool_down_time",
   "amended_from",
@@ -19,14 +19,6 @@
   {
    "fieldname": "section_break_kyci",
    "fieldtype": "Section Break"
-  },
-  {
-   "fieldname": "user_type_to_send_notification",
-   "fieldtype": "Link",
-   "in_list_view": 1,
-   "label": "User Type to Send Notification",
-   "options": "Role",
-   "link_filters": "[[\"Role\",\"is_fcm_role\",\"=\",1]]"
   },
   {
    "default": "0",
@@ -75,13 +67,21 @@
    "fieldtype": "Small Text",
    "label": "Notification Context",
    "read_only_depends_on": "eval: !doc.is_reusable && doc.docstatus == 1;"
+  },
+  {
+   "fieldname": "fcm_role",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "FCM Role",
+   "link_filters": "[[\"Role\",\"is_fcm_role\",\"=\",1]]",
+   "options": "Role"
   }
  ],
  "grid_page_length": 50,
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2026-04-07 20:44:59.459848",
+ "modified": "2026-04-08 11:38:31.180690",
  "modified_by": "Administrator",
  "module": "FCM Notification",
  "name": "Notification Broadcast",

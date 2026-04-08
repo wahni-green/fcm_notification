@@ -12,7 +12,7 @@ def execute():
                     "fieldname": "fcm_token",
                     "fieldtype": "Small Text",
                     "label": "FCM Token",
-                    "insert_after": "user_role",
+                    "insert_after": "username",
                     "read_only": 1,
                 },
             ],
