@@ -83,7 +83,7 @@ app_license = "agpl-3.0"
 # ------------
 
 # before_install = "fcm_notification.install.before_install"
-# after_install = "fcm_notification.install.after_install"
+after_install = "fcm_notification.install.after_install"
 
 # Uninstallation
 # ------------

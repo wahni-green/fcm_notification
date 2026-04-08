@@ -27,7 +27,7 @@ class NotificationBroadcast(Document):
 		send_notification({
 			"title": self.notification_title,
 			"body": self.notification_context,
-			"token": self.fcm_role,
+			"topic": self.fcm_role,
 			"method": "TOPIC",
 		})
 

@@ -10,20 +10,15 @@ def send_mobile_notification(doc, method=None):
     if doc.from_fcm:
         return
     
-    data = {
-        "title": "",
-        "body": "",
-        "token": "",
-        "method": "TOKEN"
-    }
     fcm_token = frappe.db.get_value("User", doc.for_user, "fcm_token")
     if not fcm_token:
         return
 
-    data.update({
-        "title": strip_html(doc.subject or ""),
-        "body": strip_html(doc.email_content or ""),
-        "token": fcm_token
-    })
-
-    send_notification(data)
+    send_notification(
+        {
+            "title": strip_html(doc.subject or ""),
+            "body": strip_html(doc.email_content or ""),
+            "token": fcm_token,
+            "method": "TOKEN"
+        }
+    )

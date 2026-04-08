@@ -57,11 +57,9 @@ def update_fcm_token(fcm_token=None):
 		return {
 			"success": False,
 			"message": "FCM token is required",
-		}
-		
-	user_doc = frappe.get_doc("User", user)
-	user_doc.fcm_token = fcm_token
-	user_doc.save(ignore_permissions=True)
+		}	
+	
+	frappe.db.set_value("User", user, "fcm_token", fcm_token) 
 
 	roles = frappe.get_roles(user)
 	fcm_roles = frappe.get_all(
