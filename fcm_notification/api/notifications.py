@@ -15,8 +15,8 @@ def fetch_notifications():
 	)
 
 	for notification in notification_list:
-		notification["subject"] = strip_html(notification["subject"])
-		notification["email_content"] = strip_html(notification["email_content"])
+		notification["subject"] = strip_html(notification.get("subject") or "")
+		notification["email_content"] = strip_html(notification.get("email_content") or "")
 
 	return{
 		"success": True, 
