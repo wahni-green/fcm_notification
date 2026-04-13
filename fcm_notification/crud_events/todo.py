@@ -4,15 +4,10 @@
 
 import frappe
 
-def todo_after_insert(doc, method):
-	if doc.allocated_to:
-		frappe.db.set_value("ToDo", doc.name, {
-			"_assign": frappe.as_json([doc.allocated_to]),
-			"reference_type": "ToDo",
-			"reference_name": doc.name
-		})
-
 def todo_on_update(doc, method):
+	if not doc.has_value_changed("allocated_to"):
+		return
+
 	if doc.allocated_to:
 		frappe.db.set_value("ToDo", doc.name, {
 			"_assign": frappe.as_json([doc.allocated_to]),
