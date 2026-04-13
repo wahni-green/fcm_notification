@@ -141,6 +141,10 @@ doc_events = {
 	"Notification Log": {
         "after_insert": "fcm_notification.crud_events.notification.send_mobile_notification",
     },
+    "ToDo": {
+		"after_insert": "fcm_notification.crud_events.todo.todo_after_insert",
+		"on_update": "fcm_notification.crud_events.todo.todo_on_update",
+	}
 }
 
 
