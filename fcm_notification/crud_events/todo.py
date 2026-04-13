@@ -3,20 +3,27 @@
 
 
 import frappe
+from frappe.desk.form.assign_to import add, remove
 
 def todo_on_update(doc, method):
+	if getattr(frappe.local, "todo_assignment_in_progress", False):
+		return
+
 	if not doc.has_value_changed("allocated_to"):
 		return
 
-	if doc.allocated_to:
-		frappe.db.set_value("ToDo", doc.name, {
-			"_assign": frappe.as_json([doc.allocated_to]),
-			"reference_type": "ToDo",
-			"reference_name": doc.name
-		})
-	else:
-		frappe.db.set_value("ToDo", doc.name, {
-			"_assign": None,
-			"reference_type": None,
-			"reference_name": None
-		})
+	try:
+		frappe.local.todo_assignment_in_progress = True
+		current_assigned = frappe.parse_json(doc.get("_assign") or "[]")
+		for user in current_assigned:
+			remove(doc.doctype, doc.name, user, ignore_permissions=True)
+
+		if doc.allocated_to:
+			add({
+				"doctype": doc.doctype,
+				"name": doc.name,
+				"assign_to": [doc.allocated_to]
+			}, ignore_permissions=True)
+
+	finally:
+		frappe.local.todo_assignment_in_progress = False
