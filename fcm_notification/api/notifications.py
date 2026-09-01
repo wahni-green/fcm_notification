@@ -49,7 +49,9 @@ def update_notifications(notification_list):
 @frappe.whitelist(methods=["POST"])
 @log_and_structure
 def update_fcm_token(fcm_token=None):
-	if not fcm_token:
+	# `is None` (not falsiness) so callers can pass "" to clear the token on
+	# logout — an empty string is a valid "no token" value, not a missing arg.
+	if fcm_token is None:
 		return {
 			"success": False,
 			"message": "FCM token is required",
