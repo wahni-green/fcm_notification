@@ -65,13 +65,19 @@ def update_fcm_token(fcm_token=None):
 	if existing:
 		frappe.db.set_value("FCM User", existing, "user", user)
 	else:
-		frappe.get_doc(
-			{
-				"doctype": "FCM User",
-				"user": user,
-				"registration_token": fcm_token,
-			}
-		).insert(ignore_permissions=True)
+		try:
+			frappe.get_doc(
+				{
+					"doctype": "FCM User",
+					"user": user,
+					"registration_token": fcm_token,
+				}
+			).insert(ignore_permissions=True)
+		except frappe.DuplicateEntryError:
+			# Lost a race with another concurrent registration of this same
+			# token (e.g. the app calling initialize() more than once) — the
+			# row landed in between our check and insert, just repoint it.
+			frappe.db.set_value("FCM User", {"registration_token": fcm_token}, "user", user)
 
 	roles = frappe.get_roles(user)
 	fcm_roles = frappe.get_all(
