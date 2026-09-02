@@ -21,6 +21,7 @@
    "fieldname": "registration_token",
    "fieldtype": "Data",
    "label": "Registration Token",
+   "length": 500,
    "reqd": 1,
    "unique": 1
   }
