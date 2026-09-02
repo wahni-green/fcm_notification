@@ -6,6 +6,7 @@ import frappe
 import firebase_admin
 from frappe.utils import get_datetime_in_timezone, add_to_date
 from firebase_admin import messaging, credentials
+from firebase_admin.messaging import UnregisteredError
 
 def send_notification(data):
 	if not frappe.get_single_value("FCM Settings", "enabled"):
@@ -49,6 +50,10 @@ def send_notification(data):
 
 	try:
 		messaging.send(message)
+	except UnregisteredError as e:
+		# The device uninstalled the app or its token rotated — not worth
+		# logging as an error, and the caller should stop retrying it.
+		return {"success": False, "error": "unregistered", "message": str(e)}
 	except Exception as e:
 		frappe.log_error(message=str(frappe.get_traceback()), title="FCM Error")
 		return {"success": False, "message": str(e)}

@@ -9,9 +9,11 @@ from fcm_notification.firebase import send_notification
 def send_mobile_notification(doc, method=None):
     if doc.from_fcm:
         return
-    
-    fcm_token = frappe.db.get_value("User", doc.for_user, "fcm_token")
-    if not fcm_token:
+
+    tokens = frappe.get_all(
+        "FCM User", filters={"user": doc.for_user}, pluck="registration_token"
+    )
+    if not tokens:
         return
 
     # FCM data payloads must be flat string->string maps, so only stamp a
@@ -22,12 +24,15 @@ def send_mobile_notification(doc, method=None):
         data["reference_doctype"] = doc.document_type
         data["reference_name"] = doc.document_name
 
-    send_notification(
-        {
-            "title": strip_html(doc.subject or ""),
-            "body": strip_html(doc.email_content or ""),
-            "token": fcm_token,
-            "method": "TOKEN",
-            "data": data or None,
-        }
-    )
+    for token in tokens:
+        result = send_notification(
+            {
+                "title": strip_html(doc.subject or ""),
+                "body": strip_html(doc.email_content or ""),
+                "token": token,
+                "method": "TOKEN",
+                "data": data or None,
+            }
+        )
+        if isinstance(result, dict) and result.get("error") == "unregistered":
+            frappe.db.delete("FCM User", {"registration_token": token})

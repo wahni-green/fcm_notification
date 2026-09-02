@@ -7,15 +7,6 @@ from frappe.custom.doctype.custom_field.custom_field import create_custom_fields
 def execute():
     create_custom_fields(
         {
-            "User": [
-                {
-                    "fieldname": "fcm_token",
-                    "fieldtype": "Small Text",
-                    "label": "FCM Token",
-                    "insert_after": "username",
-                    "read_only": 1,
-                },
-            ],
             "Role": [
                 {
                     "fieldname": "is_fcm_role",

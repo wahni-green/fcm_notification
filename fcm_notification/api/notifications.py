@@ -49,16 +49,29 @@ def update_notifications(notification_list):
 @frappe.whitelist(methods=["POST"])
 @log_and_structure
 def update_fcm_token(fcm_token=None):
-	# `is None` (not falsiness) so callers can pass "" to clear the token on
-	# logout — an empty string is a valid "no token" value, not a missing arg.
-	if fcm_token is None:
+	if not fcm_token:
 		return {
 			"success": False,
 			"message": "FCM token is required",
 		}
 
-	user = frappe.session.user	
-	frappe.db.set_value("User", user, "fcm_token", fcm_token) 
+	user = frappe.session.user
+
+	# Each device registers its own row, keyed by its token — re-registering
+	# an existing token (refresh, or the same device logging back in) just
+	# repoints it at whoever is signed in now, rather than creating a
+	# duplicate row for the same device.
+	existing = frappe.db.get_value("FCM User", {"registration_token": fcm_token}, "name")
+	if existing:
+		frappe.db.set_value("FCM User", existing, "user", user)
+	else:
+		frappe.get_doc(
+			{
+				"doctype": "FCM User",
+				"user": user,
+				"registration_token": fcm_token,
+			}
+		).insert(ignore_permissions=True)
 
 	roles = frappe.get_roles(user)
 	fcm_roles = frappe.get_all(
@@ -75,4 +88,24 @@ def update_fcm_token(fcm_token=None):
 		"message": "FCM token updated successfully",
 		"user": user,
 		"fcm_roles": fcm_roles
+	}
+
+
+@frappe.whitelist(methods=["POST"])
+@log_and_structure
+def remove_fcm_token(fcm_token=None):
+	if not fcm_token:
+		return {
+			"success": False,
+			"message": "FCM token is required",
+		}
+
+	frappe.db.delete(
+		"FCM User",
+		{"registration_token": fcm_token, "user": frappe.session.user},
+	)
+
+	return {
+		"success": True,
+		"message": "FCM token removed successfully",
 	}
