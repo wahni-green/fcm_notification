@@ -32,18 +32,39 @@ def send_notification(data):
 		firebase_admin.initialize_app(cred)
 
 	apns_expiration = str(int(add_to_date(get_datetime_in_timezone("UTC"), days=1).timestamp()))
+	title = data.get("title") or ""
+	body = data.get("body") or ""
+
+	# No top-level `notification` here on purpose: Android's FCM SDK
+	# auto-displays that using a plain single-line style that never expands to
+	# show the full text, and that display never goes through app code so it
+	# can't be styled from here. Title/body instead travel in `data`, and the
+	# app (see PushService in the Flutter client) builds the Android
+	# notification itself with a BigTextStyle. iOS still gets its `aps.alert`
+	# so the OS displays it as usual — iOS notifications are expandable
+	# without any extra style needed.
+	payload = dict(data.get("data") or {})
+	payload["title"] = title
+	payload["body"] = body
+
 	message = messaging.Message(
-		notification=messaging.Notification(
-			title=data.get("title") or None,
-			body=data.get("body") or None,
+		android=messaging.AndroidConfig(
+			ttl=86400,
+			priority="high",
 		),
 		apns=messaging.APNSConfig(
 			headers={
-				"apns-expiration": apns_expiration
-			}
+				"apns-expiration": apns_expiration,
+				"apns-priority": "10",
+			},
+			payload=messaging.APNSPayload(
+				aps=messaging.Aps(
+					alert=messaging.ApsAlert(title=title, body=body),
+					sound="default",
+				)
+			),
 		),
-		android=messaging.AndroidConfig(ttl=86400),
-		data=data.get("data") or None,
+		data=payload,
 		token=data.get("token") if data.get("method") == "TOKEN" else None,
 		topic=data.get("topic") if data.get("method") == "TOPIC" else None,
 	)
