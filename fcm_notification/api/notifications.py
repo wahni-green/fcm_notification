@@ -6,21 +6,61 @@ import frappe
 from fcm_notification.api.utils import log_and_structure
 from frappe.utils import strip_html
 
+_NOTIFICATION_FIELDS = [
+	"name",
+	"subject",
+	"email_content",
+	"from_user",
+	"type",
+	"document_type",
+	"document_name",
+	"read",
+	"creation",
+]
+
+_PAGE_SIZE = 20
+
 
 @frappe.whitelist(methods=["GET"])
 @log_and_structure
-def fetch_notifications():
-	notification_list = frappe.db.get_all(
-		"Notification Log", {"for_user": frappe.session.user}, ["*"]
+def fetch_notifications(limit_start=0):
+	limit_start = frappe.utils.cint(limit_start)
+
+	# Fetch one row past the page to know whether another page exists, same
+	# trick used by wahni_it's get_todo_list.
+	notification_list = frappe.get_all(
+		"Notification Log",
+		filters={"for_user": frappe.session.user},
+		fields=_NOTIFICATION_FIELDS,
+		order_by="creation desc",
+		limit_start=limit_start,
+		limit_page_length=_PAGE_SIZE + 1,
 	)
+
+	has_more = len(notification_list) > _PAGE_SIZE
+	notification_list = notification_list[:_PAGE_SIZE]
 
 	for notification in notification_list:
 		notification["subject"] = strip_html(notification.get("subject") or "")
 		notification["email_content"] = strip_html(notification.get("email_content") or "")
 
-	return{
-		"success": True, 
-		"message": notification_list or []
+	return {
+		"success": True,
+		"notifications": notification_list,
+		"has_more": has_more,
+	}
+
+
+@frappe.whitelist(methods=["GET"])
+@log_and_structure
+def get_unread_notification_count():
+	# A dedicated count so the bell badge reflects every unread notification,
+	# not just whatever page of the list happens to be loaded.
+	count = frappe.db.count("Notification Log", {"for_user": frappe.session.user, "read": 0})
+
+	return {
+		"success": True,
+		"count": count,
 	}
 
 
