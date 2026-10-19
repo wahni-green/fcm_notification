@@ -8,6 +8,15 @@ from frappe.utils import get_datetime_in_timezone, add_to_date
 from firebase_admin import messaging, credentials
 from firebase_admin.messaging import UnregisteredError
 
+def _ios_sound(data):
+	"""The APNs sound for a push: the named file, "default" when unspecified,
+	or no sound at all when `ios_sound` is an empty string."""
+	sound = data.get("ios_sound")
+	if sound is None:
+		return "default"
+	return sound or None
+
+
 def send_notification(data):
 	if not frappe.get_single_value("FCM Settings", "enabled"):
 		return
@@ -60,7 +69,7 @@ def send_notification(data):
 			payload=messaging.APNSPayload(
 				aps=messaging.Aps(
 					alert=messaging.ApsAlert(title=title, body=body),
-					sound="default",
+					sound=_ios_sound(data),
 				)
 			),
 		),
