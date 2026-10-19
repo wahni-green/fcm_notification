@@ -33,6 +33,11 @@ def send_mobile_notification(doc, method=None):
         if extra.get(key):
             data[key] = extra[key]
 
+    # Also sent in `data` (not just the APNs sound) so the app can honor it
+    # when it displays the push itself while open. "" means silent.
+    if extra.get("ios_sound") is not None:
+        data["ios_sound"] = extra["ios_sound"]
+
     for token in tokens:
         result = send_notification(
             {
